@@ -1,25 +1,12 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 import os
 
 app = Flask(__name__)
 
-# Define the path to the txt file to save emails
-FILE_PATH = "emails.txt"
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
-# Route to handle email submission
-@app.route('/submit', methods=['POST'])
-def submit_email():
-    # Get email from the form data
-    email = request.form.get('email')
-
-    if email:
-        # Save email to txt file, separated by '|'
-        with open(FILE_PATH, "a") as file:
-            file.write(email + '|')
-
-        return jsonify({"message": "Email saved successfully!"}), 200
-    else:
-        return jsonify({"error": "No email provided!"}), 400
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))  # Use PORT env variable from Render
+    app.run(host='0.0.0.0', port=port)
